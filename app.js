@@ -6,6 +6,7 @@ var passport = require('passport');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var flash = require('connect-flash');
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/express-dev');
 var app = express();
@@ -26,13 +27,15 @@ app.use(cookieParser());
 app.use(session({ secret: 'keyboard cat', key: 'sid'}));
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(flash());
+
 app.use(passport.initialize());
 app.use(passport.session());
 require('./config/passport')(passport);
 
 app.use('/', routes);
 app.use('/users', users);
-app.use('/posts', requests);
+app.use('/requests', requests);
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {

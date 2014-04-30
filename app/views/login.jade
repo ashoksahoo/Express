@@ -12,6 +12,7 @@ body
 			h1
 				span.fa.fa-sign-in
 				| Login
+			div.alert.alert-danger #{message}
 			form(action='/login', method='post')
 				.form-group
 					label Email

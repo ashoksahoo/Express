@@ -1,13 +1,20 @@
+/**
+ * Request router
+ * */
+
 var express = require('express');
-var posts = express.Router();
+var requests = express.Router();
 var path;
-var controller  = require('../controllers/requests')
+var controller  = require('../controllers/requests');
 path = require('path');
 /* GET Posts listing. */
-posts.get('/', function(req, res) {
-	res.send('respond with a post');
-});
+requests.get('/', controller.getRequests);
+requests.get('/new', controller.createRequestPage);
+requests.get('/:id', controller.getRequestById);
+requests.post('/new', controller.createRequest);
+requests.get('/edit/:id', controller.editRequestPage);
+requests.post('/edit/:id', controller.editRequest);
 
 
 
-module.exports = posts;
+module.exports = requests;

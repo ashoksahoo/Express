@@ -36,3 +36,7 @@ exports.getUserProfilePage = function(req, res) {
 		 // get the user out of session and pass to template
 	});
 };
+exports.logoutUser = function(req, res) {
+	req.logout();
+	res.redirect('/');
+};

@@ -1,3 +1,7 @@
+/**
+ * Request Model
+ * Created by Ashok on 4/30/2014.
+ */
 mongoose = require("mongoose");
 Schema = mongoose.Schema;
 
@@ -8,6 +12,11 @@ var RequestSchema = new Schema({
 		default: Date.now
 	},
 	title: {
+		type: String,
+		default: '',
+		trim: true
+	},
+	location: {
 		type: String,
 		default: '',
 		trim: true
@@ -26,13 +35,13 @@ var RequestSchema = new Schema({
 });
 var Request = mongoose.model('Request', RequestSchema);
 
-exports.findRequestbyId =function(requestId,callback){
-	Request.find({_id:requestId}, function(err, obj){
+exports.findRequestById =function(requestId,callback){
+	Request.findOne({_id:requestId}, function(err, obj){
 		if (err){
 			callback(err.message);
 			console.log(err);
 		}else{
-			callback(obj)
+			callback(null,obj)
 		}
 	});
 };

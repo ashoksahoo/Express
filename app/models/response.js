@@ -2,7 +2,7 @@ mongoose = require("mongoose");
 Schema = mongoose.Schema;
 
 
-var RequestSchema = new Schema({
+var ResponseSchema = new Schema({
 	created: {
 		type: Date,
 		default: Date.now
@@ -12,7 +12,7 @@ var RequestSchema = new Schema({
 		default: '',
 		trim: true
 	},
-	request_type: {
+	response_type: {
 		type: String
 	},
 	created_by: {
@@ -24,10 +24,10 @@ var RequestSchema = new Schema({
 		ref: 'Response'
 	}
 });
-var Request = mongoose.model('Request', RequestSchema);
+var Response = mongoose.model('Response', ResponseSchema);
 
-exports.findRequestbyId =function(requestId,callback){
-	Request.find({_id:requestId}, function(err, obj){
+exports.findResponsebyId =function(responseId,callback){
+	Response.find({_id:responseId}, function(err, obj){
 		if (err){
 			callback(err.message);
 			console.log(err);
@@ -38,8 +38,8 @@ exports.findRequestbyId =function(requestId,callback){
 };
 
 
-exports.createRequest = function(record, callback){
-	Request.create(record, function(err, obj){
+exports.createResponse = function(record, callback){
+	Response.create(record, function(err, obj){
 		if (err){
 			callback(err.message);
 			console.log(err);
@@ -49,8 +49,8 @@ exports.createRequest = function(record, callback){
 	})
 };
 
-exports.findRequests=function(callback){
-	Request.find().populate('user', 'name').exec((function(err, obj) {
+exports.findResponses=function(callback){
+	Response.find().populate('user', 'name').exec((function(err, obj) {
 		if (err)
 		{
 			callback(err);
@@ -62,8 +62,8 @@ exports.findRequests=function(callback){
 	}))
 };
 
-exports.updateRequest=function(requestId,request,callback){
-	Request.update({_id: requestId}, {$set:request},function(err, obj){
+exports.updateResponse=function(responseId,response,callback){
+	Response.update({_id: responseId}, {$set:response},function(err, obj){
 		if(err)
 		{
 			console.error(err);
@@ -74,8 +74,8 @@ exports.updateRequest=function(requestId,request,callback){
 	});
 };
 
-exports.destroyRequest=function(requestId,callback){
-	Request.delete({_id: requestId},function(err, obj){
+exports.destroyResponse=function(responseId,callback){
+	Response.delete({_id: responseId},function(err, obj){
 		if(err)
 		{
 			console.error(err);

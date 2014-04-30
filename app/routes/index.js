@@ -1,10 +1,10 @@
 var express = require('express');
-var controller = require('../controllers/index')
+var controller = require('../controllers/index');
 var passport = require('passport');
 var router = express.Router();
 
 /* GET home page. */
-	router.get('/', function(req, res) {
+	router.get('/',isLoggedIn, function(req, res) {
 	  res.render('index', { title: 'Express' });
 	});
 
@@ -12,21 +12,33 @@ var router = express.Router();
 //	router.get('/tpl/:name',controller.getAngularTemplate);
 
 	router.get('/login', function(req, res) {
-		res.render('login');
+		res.render('login', { message: req.flash('loginMessage')} );
 	});
 	router.get('/register', function(req, res) {
 		res.render('register');
 	});
 
-	router.post('/login', passport.authenticate('local', { successRedirect: '/',
-		failureRedirect: '/login' }));
+	router.post('/login', passport.authenticate('local-login', {
+		successRedirect: '/profile',
+		failureRedirect: '/login',
+		failureFlash : true
+		}));
 
-	router.post('/register', passport.authenticate('local-signup', {
-		successRedirect : '/profile', // redirect to the secure profile section
-		failureRedirect : '/register' // redirect back to the signup page if there is an error
+	router.post('/register', passport.authenticate('local-register', {
+		successRedirect : '/profile',
+		failureRedirect : '/register',
+		failureFlash : true
 	}));
 
+	router.get('/logout', controller.logoutUser);
 
-router.get('/profile', controller.getUserProfilePage);
+
+	router.get('/profile', 	isLoggedIn, controller.getUserProfilePage);
+
+	function isLoggedIn(req, res, next) {
+	if (req.isAuthenticated())
+		return next();
+	res.redirect('/login');
+}
 
 module.exports = router;
