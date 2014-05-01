@@ -8,7 +8,8 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var flash = require('connect-flash');
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/express-dev');
+var db = mongoose.connect('mongodb://localhost/express-dev');
+var mongoStore = require('connect-mongo')({session: session});
 var app = express();
 
 var routes = require('./app/routes/index');
@@ -24,7 +25,20 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
-app.use(session({ secret: 'keyboard cat', key: 'sid'}));
+app.use(session({
+	secret: 'boostrap-node is awesome',
+	key: 'sid',
+	store: new mongoStore({
+		url: 'mongodb://localhost/express-dev',
+		collection: 'sessions'
+	}),
+	cookie: {
+		path: '/',
+		httpOnly: true,
+		expires: (1000 * 60 * 60 * 24 )
+	}
+}));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(flash());
