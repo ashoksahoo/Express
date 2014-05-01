@@ -14,7 +14,8 @@ requests.get('/:id', controller.getRequestById);
 requests.post('/new', controller.createRequest);
 requests.get('/edit/:id', controller.editRequestPage);
 requests.post('/edit/:id', controller.editRequest);
-
+requests.get('/:id/response', controller.getResponseForm);
+requests.post('/:id/response', controller.createResponseForRequest);
 
 
 module.exports = requests;

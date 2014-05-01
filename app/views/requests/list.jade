@@ -11,6 +11,7 @@ body
 				th Request Title
 				th Location
 				th
+				th
 			tbody
 				each request in requests
 					tr
@@ -19,3 +20,6 @@ body
 						td
 							a(href="/requests/edit/#{request._id}")
 								span.view-details  Edit
+						td
+							a(href="/requests/#{request._id}/response")
+								span.view-details  Respond to request

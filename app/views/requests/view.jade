@@ -1,0 +1,17 @@
+//
+	Created by Ashok on 5/1/2014.
+
+head
+	title Req list
+	link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css')
+	link(rel='stylesheet', href='//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css')
+body
+	h1 Title
+	p #{request.title}
+	h2 Location
+	p #{request.location}
+	h2 Responses
+	each response in request.response
+		p #{response.amount}
+		p #{response.eta}
+

@@ -4,6 +4,7 @@
  */
 mongoose = require("mongoose");
 Schema = mongoose.Schema;
+var ObjectId = require('mongoose').Types.ObjectId;
 
 
 var RequestSchema = new Schema({
@@ -28,10 +29,24 @@ var RequestSchema = new Schema({
 		type: Schema.ObjectId,
 		ref: 'User'
 	},
-	response: {
-		type: Schema.ObjectId,
-		ref: 'Response'
-	}
+	response: [{
+		created: {
+			type: Date,
+			default: Date.now
+		},
+		eta: {
+			type: Date
+		},
+		amount: {
+			type: String,
+			default: '',
+			trim: true
+		},
+		created_by: {
+			type: Schema.ObjectId,
+			ref: 'User'
+		}
+	}]
 });
 var Request = mongoose.model('Request', RequestSchema);
 
@@ -39,7 +54,7 @@ exports.findRequestById =function(requestId,callback){
 	Request.findOne({_id:requestId}, function(err, obj){
 		if (err){
 			callback(err.message);
-			console.log(err);
+			console.error(err);
 		}else{
 			callback(null,obj)
 		}
@@ -51,7 +66,7 @@ exports.createRequest = function(record, callback){
 	Request.create(record, function(err, obj){
 		if (err){
 			callback(err.message);
-			console.log(err);
+			console.error(err);
 		}else{
 			callback(obj);
 		}
@@ -76,7 +91,7 @@ exports.updateRequest=function(requestId,request,callback){
 		if(err)
 		{
 			console.error(err);
-			callback( 'Error while updating the company record', true);
+			callback( 'Error while updating the record', true);
 		}
 		else
 			callback(obj);
@@ -88,9 +103,24 @@ exports.destroyRequest=function(requestId,callback){
 		if(err)
 		{
 			console.error(err);
-			callback( 'Error while updating the company record', true);
+			callback( 'Error while updating the record', true);
 		}
 		else
 			callback(obj);
 	});
+};
+
+exports.addResponse = function(request, response, callback){
+Request.findById(request,function(err,obj){
+	obj.response.push(response);
+	obj.save(function (err,obj) {
+		if(err)
+		{
+			console.error(err);
+			callback( 'Error while updating the record', true);
+		}
+		else
+			callback(obj);
+	});
+})
 };

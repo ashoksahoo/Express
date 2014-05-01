@@ -25,9 +25,9 @@ exports.getRequestById = function(req,res){
 			console.log(err);
 		}
 		console.log(obj);
-		res.render('requests/list',{title:'Request Details',requests:obj});
+		res.render('requests/view',{title:'Request Details',request:obj});
 	};
-	manager.findRequestbyId(id,callback);
+	manager.findRequestById(id,callback);
 };
 
 exports.createRequestPage = function(req,res){
@@ -67,7 +67,6 @@ exports.editRequestPage = function(req,res){
 		if(err){
 			console.error(err)
 		}
-		console.log(obj)
 		res.render('requests/edit',{title:'Edit Request Details',request:obj});
 	};
 	manager.findRequestById(id,callback);
@@ -84,4 +83,22 @@ exports.editRequest = function(req,res){
 		res.redirect( '/requests',301 );
 	};
 	manager.updateRequest(id,updateRecord,callback);
+};
+
+exports.createResponseForRequest = function(req,res){
+	var response = {
+		amount : req.param('amount'),
+		eta :req.param('eta')
+	};
+	var request = req.param('id');
+	var responseCallback = function(obj){
+
+	res.redirect( '/requests/'+obj._id,301 );
+	};
+	manager.addResponse(request, response, responseCallback);
+};
+
+
+exports.getResponseForm = function(req, res){
+	res.render('responses/create', { title: 'New Response' });
 };
