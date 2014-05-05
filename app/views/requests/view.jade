@@ -10,14 +10,22 @@ body
 	p #{request.title}
 	h2 Location
 	p #{request.location}
-	h2 Responses
-	- var counter = 0
-	ol
+	if(!request.approved)
+		h2 Responses
+		- var counter = 0
+			ol
+				each response in request.response
+					li
+						p #{response.amount}
+						p #{response.eta}
+						p #{response.created_by.profile.name}
+						a.btn.btn-success(href='/requests/#{request._id}/approve/#{counter}') Approve
+						- counter = counter +1
+	if(request.approved)
+		h2 Approved Response
 		each response in request.response
-			li
+			if(response.approved)
 				p #{response.amount}
 				p #{response.eta}
 				p #{response.created_by.profile.name}
-				a.btn.btn-success(href='/requests/#{request._id}/approve/#{counter}') Approve
-				- counter = counter +1
 

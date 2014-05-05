@@ -12,7 +12,7 @@ exports.getRequestsNew = function(req,res){
 			res.send(err);
 		}
 		console.warn(obj);
-		res.render('requests/list', { title: 'All Requests', requests:obj});
+		res.render('requests/list', { title: 'Recent Requests', requests:obj});
 	};
 	manager.findRequestsNew(callback);
 };
@@ -25,7 +25,7 @@ exports.getRequestsOld = function(req,res){
 			res.send(err);
 		}
 		console.warn(obj);
-		res.render('requests/list', { title: 'All Requests', requests:obj});
+		res.render('requests/list', { title: 'Approved Requests', requests:obj});
 	};
 	manager.findRequestsApproved(callback);
 };

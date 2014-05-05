@@ -94,7 +94,7 @@ exports.findRequestsNew = function(callback){
 	}))
 };
 exports.findRequestsApproved = function(callback){
-	Request.find({ approved: true} ).populate('created_by','profile.name').exec((function(err, obj) {
+	Request.find({ approved: true}).populate('created_by response.created_by[]','profile.name profile.name').exec((function(err, obj) {
 		if (err)
 		{
 			callback(err);
