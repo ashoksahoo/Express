@@ -4,16 +4,30 @@
  */
 manager = require('./../models/request');
 
-exports.getRequests = function(req,res){
+exports.getRequestsNew = function(req,res){
 	var callback=function(err, obj)
 	{
 		if(err)
 		{
 			res.send(err);
 		}
+		console.warn(obj);
 		res.render('requests/list', { title: 'All Requests', requests:obj});
 	};
-	manager.findRequests(callback);
+	manager.findRequestsNew(callback);
+};
+
+exports.getRequestsOld = function(req,res){
+	var callback=function(err, obj)
+	{
+		if(err)
+		{
+			res.send(err);
+		}
+		console.warn(obj);
+		res.render('requests/list', { title: 'All Requests', requests:obj});
+	};
+	manager.findRequestsApproved(callback);
 };
 
 exports.getRequestById = function(req,res){
@@ -23,7 +37,6 @@ exports.getRequestById = function(req,res){
 		{
 			console.log(err);
 		}
-		console.log(obj);
 		res.render('requests/view',{title:'Request Details',request:obj});
 	};
 	manager.findRequestById(id,callback);
@@ -37,10 +50,11 @@ exports.createRequestPage = function(req,res){
 exports.createRequest = function(req,res){
 		var newRecord = {
 			title : req.param('title'),
-			location :req.param('location')
+			location :req.param('location'),
+			created_by : req.user._id
 		};
 		var callback = function(obj){
-			res.redirect( '/requests',301 );
+			res.redirect('/requests');
 		};
 		manager.createRequest(newRecord,callback);
 };
@@ -87,7 +101,8 @@ exports.editRequest = function(req,res){
 exports.createResponseForRequest = function(req,res){
 	var response = {
 		amount : req.param('amount'),
-		eta :req.param('eta')
+		eta :req.param('eta'),
+		created_by : req.user._id
 	};
 	var request = req.param('id');
 	var responseCallback = function(obj){
@@ -100,4 +115,15 @@ exports.createResponseForRequest = function(req,res){
 
 exports.getResponseForm = function(req, res){
 	res.render('responses/create', { title: 'New Response' });
+};
+exports.approveResponse = function(req,res){
+
+	var approveCallback = function(obj){
+
+	res.redirect( '/requests/'+obj._id,301 );
+	};
+	var request = req.param('id');
+	var list = req.param('list');
+	manager.approveResponse(request, list,approveCallback)
+
 };

@@ -29,6 +29,10 @@ var RequestSchema = new Schema({
 		type: Schema.ObjectId,
 		ref: 'User'
 	},
+	approved: {
+		type: Boolean,
+		default: false
+	},
 	response: [{
 		created: {
 			type: Date,
@@ -42,7 +46,7 @@ var RequestSchema = new Schema({
 			default: '',
 			trim: true
 		},
-		status: {
+		approved: {
 			type: Boolean,
 			default: false
 		},
@@ -55,7 +59,7 @@ var RequestSchema = new Schema({
 var Request = mongoose.model('Request', RequestSchema);
 
 exports.findRequestById = function(requestId,callback){
-	Request.findOne({_id:requestId}, function(err, obj){
+	Request.findOne({_id:requestId}).populate('response.created_by', 'profile.name').exec(function(err, obj){
 		if (err){
 			callback(err.message);
 			console.error(err);
@@ -77,8 +81,20 @@ exports.createRequest = function(record, callback){
 	})
 };
 
-exports.findRequests = function(callback){
-	Request.find().populate('user', 'name').exec((function(err, obj) {
+exports.findRequestsNew = function(callback){
+	Request.find({ approved: false} ).populate('created_by','profile.name').exec((function(err, obj) {
+		if (err)
+		{
+			callback(err);
+		}
+		else
+		{
+			callback(null, obj);
+		}
+	}))
+};
+exports.findRequestsApproved = function(callback){
+	Request.find({ approved: true} ).populate('created_by','profile.name').exec((function(err, obj) {
 		if (err)
 		{
 			callback(err);
@@ -117,6 +133,23 @@ exports.destroyRequest=function(requestId,callback){
 exports.addResponse = function(request, response, callback){
 Request.findById(request,function(err,obj){
 	obj.response.push(response);
+	obj.save(function (err,obj) {
+		if(err)
+		{
+			console.error(err);
+			callback( 'Error while updating the record', true);
+		}
+		else
+			callback(obj);
+	});
+})
+};
+
+
+exports.approveResponse = function(request, list, callback){
+Request.findById(request,function(err,obj){
+	obj.approved = true;
+	obj.response[list].approved = true;
 	obj.save(function (err,obj) {
 		if(err)
 		{

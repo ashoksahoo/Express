@@ -2,7 +2,7 @@
 	Created by Ashok on 5/1/2014.
 
 head
-	title Req list
+	title View Request
 	link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css')
 	link(rel='stylesheet', href='//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css')
 body
@@ -11,7 +11,13 @@ body
 	h2 Location
 	p #{request.location}
 	h2 Responses
-	each response in request.response
-		p #{response.amount}
-		p #{response.eta}
+	- var counter = 0
+	ol
+		each response in request.response
+			li
+				p #{response.amount}
+				p #{response.eta}
+				p #{response.created_by.profile.name}
+				a.btn.btn-success(href='/requests/#{request._id}/approve/#{counter}') Approve
+				- counter = counter +1
 

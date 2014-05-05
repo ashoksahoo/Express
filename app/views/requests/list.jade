@@ -1,5 +1,5 @@
 head
-	title Req list
+	title Request list
 	link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css')
 	link(rel='stylesheet', href='//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css')
 	style
@@ -10,16 +10,16 @@ body
 			tr
 				th Request Title
 				th Location
-				th
+				th Request By
 				th
 			tbody
 				each request in requests
 					tr
-						td #{request.title}
-						td  #{request.location}
 						td
-							a(href="/requests/edit/#{request._id}")
-								span.view-details  Edit
+							a(href="/requests/#{request._id}")
+								| #{request.title}
+						td  #{request.location}
+						td  #{request.created_by.profile.name}
 						td
 							a(href="/requests/#{request._id}/response")
 								span.view-details  Respond to request
