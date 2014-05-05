@@ -5,7 +5,7 @@ head
 	link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css')
 	link(rel='stylesheet', href='//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css')
 	style
-		body{padding-top:80px;word-wrap:break-word}
+		body {padding-top:80px; word-wrap: break-word}
 body
 	.container
 		.page-header.text-center
@@ -13,6 +13,8 @@ body
 				span.fa.fa-anchor
 				| Profile Page
 			a.btn.btn-default.btn-sm(href='/logout') Logout
+			.clearfix
+			a.btn.btn-default.btn-sm(href='/profile/edit') Edit Profile
 		.row
 			.col-sm-6
 				.well
@@ -26,6 +28,6 @@ body
 						strong email
 						| :#{user.local.email}
 						br
-						strong Hashed Password
-						| :#{user.local.password}
+						strong Role
+						| :#{user.role}
 

@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(session({
 	secret: 'boostrap-node is awesome',
-	key: 'sid',
+	key: 'SID',
 	store: new mongoStore({
 		url: 'mongodb://localhost/express-dev',
 		collection: 'sessions'
@@ -35,7 +35,7 @@ app.use(session({
 	cookie: {
 		path: '/',
 		httpOnly: true,
-		expires: (1000 * 60 * 60 * 24 )
+		expires: (1000 * 60 * 60 )
 	}
 }));
 

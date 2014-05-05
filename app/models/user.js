@@ -6,27 +6,56 @@ var userSchema = mongoose.Schema({
 
 	local            : {
 		email        : String,
-		password     : String,
+		password     : String
 	},
-	facebook         : {
-		id           : String,
-		token        : String,
-		email        : String,
-		name         : String
+	profile 		: {
+		name 		: {
+			type: String,
+			default: '',
+			trim: true
+		},
+		card 		: {
+			type: String,
+			default: '',
+			trim: true
+		},
+		phone 		: {
+			type: String,
+			default: '',
+			trim: true
+		},
+		location 	: {
+			type: String,
+			default: '',
+			trim: true
+		},
+		type 		: {
+			type: String,
+			default: '',
+			trim: true
+		},
+		contact 	: {
+			type: String,
+			default: '',
+			trim: true
+		},
+		details 	: {
+			type: String,
+			default: '',
+			trim: true
+		},
+		timings 	: {
+			type: String,
+			default: '',
+			trim: true
+		},
+		account 	: {
+			type: String,
+			default: '',
+			trim: true
+		}
 	},
-	twitter          : {
-		id           : String,
-		token        : String,
-		displayName  : String,
-		username     : String
-	},
-	google           : {
-		id           : String,
-		token        : String,
-		email        : String,
-		name         : String
-	}
-
+	role : String
 });
 
 // methods ======================
@@ -39,6 +68,6 @@ userSchema.methods.generateHash = function(password) {
 userSchema.methods.validPassword = function(password) {
 	return bcrypt.compareSync(password, this.local.password);
 };
-
 // create the model for users and expose it to our app
 module.exports = mongoose.model('User', userSchema);
+

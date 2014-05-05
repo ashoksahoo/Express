@@ -3,18 +3,18 @@ var controller = require('../controllers/index');
 var passport = require('passport');
 var router = express.Router();
 
-/* GET home page. */
 	router.get('/',isLoggedIn, function(req, res) {
 	  res.render('index', { title: 'Express' });
 	});
 
-//	router.get('/tpl/:module/:name',controller.getAngularTemplate);
-//	router.get('/tpl/:name',controller.getAngularTemplate);
-
 	router.get('/login', function(req, res) {
+		if (req.isAuthenticated())
+			res.redirect('/profile');
 		res.render('login', { message: req.flash('loginMessage')} );
 	});
 	router.get('/register', function(req, res) {
+		if (req.isAuthenticated())
+			res.redirect('/profile');
 		res.render('register');
 	});
 
@@ -34,6 +34,8 @@ var router = express.Router();
 
 
 	router.get('/profile', 	isLoggedIn, controller.getUserProfilePage);
+	router.get('/profile/edit', 	isLoggedIn, controller.editUserProfilePage);
+	router.post('/profile/edit', 	isLoggedIn, controller.editUserProfile);
 
 	function isLoggedIn(req, res, next) {
 	if (req.isAuthenticated())

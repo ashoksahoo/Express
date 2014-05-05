@@ -11,7 +11,6 @@ exports.getRequests = function(req,res){
 		{
 			res.send(err);
 		}
-		console.log(obj);
 		res.render('requests/list', { title: 'All Requests', requests:obj});
 	};
 	manager.findRequests(callback);

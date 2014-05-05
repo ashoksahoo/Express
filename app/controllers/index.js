@@ -1,3 +1,4 @@
+var User = require('./../models/user');
 var passport = require('passport'),
 	LocalStrategy = require('passport-local').Strategy;
 
@@ -36,7 +37,60 @@ exports.getUserProfilePage = function(req, res) {
 		 // get the user out of session and pass to template
 	});
 };
+exports.editUserProfilePage = function(req, res) {
+	if (req.user.role== "client"){
+	res.render('user/editprofile_c', {
+		user : req.user
+		 // get the user out of session and pass to template
+	});
+	}
+	else if(req.user.role== "business"){
+	res.render('user/editprofile_b', {
+		user : req.user
+		 // get the user out of session and pass to template
+	});
+	}
+	else if(req.user.role== "admin"){
+		console.warn(req.user);
+	res.render('user/editprofile_a', {
+		user : req.user
+		 // get the user out of session and pass to template
+	});
+	}
+	else{
+		res.status(403);
+		res.send("You are not an authenticated User")
+	}
+};
+exports.editUserProfile = function(req, res) {
+	var id=req.user._id;
+
+	var updateRecord = {
+		name :req.param('name'),
+		card :req.param('card'),
+		phone :req.param('phone'),
+		location :req.param('location'),
+		type :req.param('type'),
+		contact :req.param('contact'),
+		details :req.param('details'),
+		timings :req.param('timings'),
+		account :req.param('account')
+	};
+	var callback = function(obj){
+		res.redirect( '/profile',301 );
+	};
+	User.findById(id,function(err,obj){
+		obj.profile = updateRecord;
+		obj.save(function(err,obj){
+			if(err){
+				console.error(err);
+			}
+			callback(obj);
+		});
+	});
+};
+
 exports.logoutUser = function(req, res) {
 	req.logout();
-	res.redirect('/');
+	res.redirect('/profile', 301);
 };

@@ -42,6 +42,10 @@ var RequestSchema = new Schema({
 			default: '',
 			trim: true
 		},
+		status: {
+			type: Boolean,
+			default: false
+		},
 		created_by: {
 			type: Schema.ObjectId,
 			ref: 'User'
@@ -50,7 +54,7 @@ var RequestSchema = new Schema({
 });
 var Request = mongoose.model('Request', RequestSchema);
 
-exports.findRequestById =function(requestId,callback){
+exports.findRequestById = function(requestId,callback){
 	Request.findOne({_id:requestId}, function(err, obj){
 		if (err){
 			callback(err.message);
@@ -73,7 +77,7 @@ exports.createRequest = function(record, callback){
 	})
 };
 
-exports.findRequests=function(callback){
+exports.findRequests = function(callback){
 	Request.find().populate('user', 'name').exec((function(err, obj) {
 		if (err)
 		{
@@ -103,7 +107,7 @@ exports.destroyRequest=function(requestId,callback){
 		if(err)
 		{
 			console.error(err);
-			callback( 'Error while updating the record', true);
+			callback( 'Error while deleting the record', true);
 		}
 		else
 			callback(obj);
