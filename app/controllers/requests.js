@@ -11,7 +11,6 @@ exports.getRequestsNew = function(req,res){
 		{
 			res.send(err);
 		}
-		console.warn(obj);
 		res.render('requests/list', { title: 'Recent Requests', requests:obj});
 	};
 	manager.findRequestsNew(callback);
@@ -35,8 +34,10 @@ exports.getRequestById = function(req,res){
 	var callback=function(err,obj){
 		if(err)
 		{
-			console.log(err);
+			res.status(404);
+			res.render("404");
 		}
+		else
 		res.render('requests/view',{title:'Request Details',request:obj});
 	};
 	manager.findRequestById(id,callback);
@@ -53,8 +54,12 @@ exports.createRequest = function(req,res){
 			location :req.param('location'),
 			created_by : req.user._id
 		};
-		var callback = function(obj){
-			res.redirect('/requests');
+		var callback = function(err,obj){
+			if(err){
+				res.status(404);
+				res.render("404");
+			}
+			res.redirect('/requests/recent');
 		};
 		manager.createRequest(newRecord,callback);
 };
@@ -69,9 +74,9 @@ exports.listRequests = function(req,res){
 		for (var i = 0, name = [], len = obj.length; i < len; ++i) {
 			name[i] = obj[i].title;
 		}
-		res.send(name);
+		res.send(obj);
 	};
-	manager.findRequests(callback);
+	manager.findRequestsAll(callback);
 };
 
 exports.editRequestPage = function(req,res){
@@ -93,7 +98,7 @@ exports.editRequest = function(req,res){
 		location :req.param('location')
 	};
 	var callback = function(obj){
-		res.redirect( '/requests',301 );
+		res.redirect( '/requests/recent',301 );
 	};
 	manager.updateRequest(id,updateRecord,callback);
 };
@@ -118,8 +123,12 @@ exports.getResponseForm = function(req, res){
 };
 exports.approveResponse = function(req,res){
 
-	var approveCallback = function(obj){
-
+	var approveCallback = function(obj, err){
+	if(err){
+		res.status(405);
+		res.render("404");
+	}
+	if(obj)
 	res.redirect( '/requests/'+obj._id,301 );
 	};
 	var request = req.param('id');

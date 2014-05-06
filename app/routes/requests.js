@@ -10,6 +10,7 @@ path = require('path');
 /* GET Posts listing. */
 requests.get('/approved', isLoggedIn, controller.getRequestsOld);
 requests.get('/recent', isLoggedIn, controller.getRequestsNew);
+requests.get('/list', isLoggedIn, controller.listRequests);
 requests.get('/new', isLoggedIn, controller.createRequestPage);
 requests.get('/:id', isLoggedIn, controller.getRequestById);
 requests.post('/new', isLoggedIn, controller.createRequest);

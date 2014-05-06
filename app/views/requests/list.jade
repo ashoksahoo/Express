@@ -11,7 +11,6 @@ body
 				th Request Title
 				th Location
 				th Request By
-				th
 			tbody
 				each request in requests
 					tr
@@ -20,6 +19,7 @@ body
 								| #{request.title}
 						td  #{request.location}
 						td  #{request.created_by.profile.name}
-						td
-							a(href="/requests/#{request._id}/response")
-								span.view-details  Respond to request
+						if(!request.approved)
+							td
+								a(href="/requests/#{request._id}/response")
+									span.view-details  Respond to request

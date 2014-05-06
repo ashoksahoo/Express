@@ -76,13 +76,25 @@ exports.createRequest = function(record, callback){
 			callback(err.message);
 			console.error(err);
 		}else{
-			callback(obj);
+			callback(null, obj);
 		}
 	})
 };
 
 exports.findRequestsNew = function(callback){
 	Request.find({ approved: false} ).populate('created_by','profile.name').exec((function(err, obj) {
+		if (err)
+		{
+			callback(err);
+		}
+		else
+		{
+			callback(null, obj);
+		}
+	}))
+};
+exports.findRequestsAll = function(callback){
+	Request.find().populate('created_by','profile.name').exec((function(err, obj) {
 		if (err)
 		{
 			callback(err);
@@ -148,6 +160,10 @@ Request.findById(request,function(err,obj){
 
 exports.approveResponse = function(request, list, callback){
 Request.findById(request,function(err,obj){
+	if(obj.approved || list > obj.response.length-1){
+		console.error("User trying to Click invalid link");
+		return callback(null, "User trying to Click invalid link")
+	}
 	obj.approved = true;
 	obj.response[list].approved = true;
 	obj.save(function (err,obj) {
