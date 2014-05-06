@@ -58,15 +58,41 @@ var RequestSchema = new Schema({
 });
 var Request = mongoose.model('Request', RequestSchema);
 
-exports.findRequestById = function(requestId,callback){
-	Request.findOne({_id:requestId}).populate('response.created_by', 'profile.name').exec(function(err, obj){
-		if (err){
-			callback(err.message);
-			console.error(err);
-		}else{
-			callback(null,obj)
-		}
-	});
+exports.findRequestById = function(requestId, user,callback){
+	if(user.role == "client"){
+		Request.findOne({_id:requestId}).populate('response.created_by', 'profile.name').exec(function(err, obj){
+
+			if (err){
+				callback(err.message);
+				console.error(err);
+			}
+			else{
+				var response = obj.response;
+
+				obj.response = response.filter(function(resp){
+					return resp.created_by._id.toString() == user._id.toString()
+				});
+				callback(null,obj)
+			}
+		});
+	}
+	if(user.role == "admin"){
+	}
+	if(user.role == "business"){
+	}
+	else{
+		Request.findOne({_id:requestId}).populate('response.created_by', 'profile.name').exec(function(err, obj){
+
+			if (err){
+				callback(err.message);
+				console.error(err);
+			}
+			else{
+				callback(null,obj)
+			}
+		});
+	}
+
 };
 
 

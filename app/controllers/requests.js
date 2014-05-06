@@ -40,7 +40,7 @@ exports.getRequestById = function(req,res){
 		else
 		res.render('requests/view',{title:'Request Details',request:obj});
 	};
-	manager.findRequestById(id,callback);
+	manager.findRequestById(id,req.user, callback);
 };
 
 exports.createRequestPage = function(req,res){
