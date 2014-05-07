@@ -1,4 +1,5 @@
 var User = require('./../models/user');
+var reqManager = require('./../models/request');
 var passport = require('passport'),
 	LocalStrategy = require('passport-local').Strategy;
 
@@ -97,4 +98,12 @@ exports.editUserProfile = function(req, res) {
 exports.logoutUser = function(req, res) {
 	req.logout();
 	res.redirect('/profile', 301);
+};
+
+exports.getNotificationPage = function (req,res){
+	var callback = function(err,obj){
+	res.send(obj);
+//	res.render('notification', {title: "Notification", user:req.user, notifications:obj })
+	};
+	reqManager.createNotifications(req.user, callback)
 };

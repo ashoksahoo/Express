@@ -37,6 +37,9 @@ var router = express.Router();
 	router.get('/profile/edit', 	isLoggedIn, controller.editUserProfilePage);
 	router.post('/profile/edit', 	isLoggedIn, controller.editUserProfile);
 
+
+	router.get('/notifications', isLoggedIn, controller.getNotificationPage);
+
 	function isLoggedIn(req, res, next) {
 		if (req.isAuthenticated())
 			return next();

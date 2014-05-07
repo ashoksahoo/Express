@@ -5,9 +5,10 @@ block content
 			tr
 				th Request Title
 				th Location
-				th Request By
-				if(title == "Recent Requests")
-					th Respond
+				if!(user.role == "business")
+					th Request By
+					if(title == "Recent Requests")
+						th Respond
 			tbody
 				each request in requests
 					tr
@@ -15,8 +16,9 @@ block content
 							a(href="/requests/#{request._id}")
 								| #{request.title}
 						td  #{request.location}
-						td  #{request.created_by.profile.name}
-						if(!request.approved)
-							td
-								a(href="/requests/#{request._id}/response")
-									span.view-details  Respond to request
+						if!(user.role == "business")
+							td  #{request.created_by.profile.name}
+							if(!request.approved)
+								td
+									a(href="/requests/#{request._id}/response")
+										span.view-details  Respond to request

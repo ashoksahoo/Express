@@ -25,7 +25,7 @@ exports.getRequestsOld = function(req,res){
 		}
 		res.render('requests/list', { title: 'Approved Requests', requests:obj, user: req.user});
 	};
-	manager.findRequestsApproved(callback);
+	manager.findRequestsApproved(req.user,callback);
 };
 
 exports.getRequestById = function(req,res){
@@ -135,3 +135,4 @@ exports.approveResponse = function(req,res){
 	manager.approveResponse(request, list,approveCallback)
 
 };
+

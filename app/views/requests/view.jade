@@ -16,8 +16,9 @@ block content
 						p #{response.amount}
 						p #{response.eta}
 						p #{response.created_by.profile.name}
-						a.btn.btn-success(href='/requests/#{request._id}/approve/#{counter}') Approve
-						- counter = counter +1
+						if(user.role == "business")
+							a.btn.btn-success(href='/requests/#{request._id}/approve/#{counter}') Approve
+							- counter = counter +1
 	if(request.approved)
 		h3 Approved Response
 		each response in request.response

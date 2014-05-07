@@ -3,6 +3,7 @@
  * Created by Ashok on 4/30/2014.
  */
 mongoose = require("mongoose");
+var _ = require("underscore")
 Schema = mongoose.Schema;
 
 var RequestSchema = new Schema({
@@ -107,7 +108,7 @@ exports.createRequest = function(record, callback){
 
 exports.findRequestsNew = function(user, callback){
 	if(user.role == "business") {
-		Request.find({ approved: false}).populate('created_by', 'profile.name').exec(function (err, obj) {
+		Request.find({ approved: false, created_by:user._id}).populate('created_by', 'profile.name').exec(function (err, obj) {
 			if (err) {
 				callback(err);
 			}
@@ -140,17 +141,30 @@ exports.findRequestsAll = function(callback){
 		}
 	})
 };
-exports.findRequestsApproved = function(callback){
-	Request.find({ approved: true}).populate('created_by response.created_by[]','profile.name profile.name').exec(function(err, obj) {
-		if (err)
-		{
-			callback(err);
-		}
-		else
-		{
-			callback(null, obj);
-		}
-	})
+exports.findRequestsApproved = function(user,callback){
+	if(user.role == "business") {
+		console.log(user._id);
+		Request.find({ approved: true,created_by:user._id}).populate('created_by response.created_by[]','profile.name profile.name').exec(function(err, obj) {
+			if (err)
+			{
+				callback(err);
+			}
+			else
+			{
+				callback(null, obj);
+			}
+		})
+	}
+	else {
+		Request.find({ approved: true}).populate('created_by response.created_by[]', 'profile.name profile.name').exec(function (err, obj) {
+			if (err) {
+				callback(err);
+			}
+			else {
+				callback(null, obj);
+			}
+		})
+	}
 };
 
 exports.updateRequest=function(requestId,request,callback){
@@ -204,11 +218,27 @@ Request.findById(request,function(err,obj){
 	obj.save(function (err,obj) {
 		if(err)
 		{
-			console.error(err);
 			callback( 'Error while updating the record', true);
 		}
 		else
 			callback(obj);
 	});
 })
+};
+
+exports.createNotifications = function(user,callback){
+	if(user.role == "client"){
+		Request.find({approved:false}).populate('created_by','._id profile.name').exec(function(err,obj){
+			callback(err,obj)
+		})
+	}
+	else if(user.role == "business"){
+		Request.find({approved:false,created_by:user._id }).populate('created_by','._id').exec(function(err,obj){
+			callback(err,obj)
+		})
+	}
+	else{
+		callback(null,null)
+	}
+
 };
