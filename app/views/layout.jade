@@ -1,7 +1,97 @@
 doctype html
 html
-  head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    block content
+	head
+		include includes/metaInfo
+		include includes/scripts
+		include includes/fonts
+		include includes/styles
+		link(href='/stylesheets/style.css', rel='stylesheet', type='text/css')
+		title App | #{title}
+	body.skin-blue
+		header.header
+			a.logo(href='/')  RTD
+			nav.navbar.navbar-static-top(role='navigation')
+				a.navbar-btn.sidebar-toggle(href='#', data-toggle='offcanvas', role='button')
+					span.sr-only Toggle navigation
+					span.icon-bar
+					span.icon-bar
+					span.icon-bar
+				.navbar-right
+					ul.nav.navbar-nav
+						li.dropdown.messages-menu
+							a.dropdown-toggle(href='#', data-toggle='dropdown')
+								i.fa.fa-envelope
+								span.label.label-success 4
+						li.dropdown.notifications-menu
+							a.dropdown-toggle(href='#', data-toggle='dropdown')
+								i.fa.fa-warning
+								span.label.label-warning 10
+						li.dropdown.tasks-menu
+							a.dropdown-toggle(href='#', data-toggle='dropdown')
+								i.fa.fa-tasks
+								span.label.label-danger 9
+						li.dropdown.user.user-menu
+							a.dropdown-toggle(href='#', data-toggle='dropdown')
+								i.glyphicon.glyphicon-user
+								if locals.user
+									span
+										| #{user.profile.name}
+										i.caret
+							ul.dropdown-menu
+								li.user-header.bg-light-blue
+									if locals.user
+										img.img-circle(alt='User Image')
+										p
+											| #{user.role}
+								li.user-footer
+									.pull-left
+										a.btn.btn-default.btn-flat(href='/profile') Profile
+									.pull-right
+										a.btn.btn-default.btn-flat(href='/logout') Logout
+		.wrapper.row-offcanvas.row-offcanvas-left
+			aside.left-side.sidebar-offcanvas
+				section.sidebar
+					.user-panel
+						if locals.user
+							.pull-left.image
+								img.img-circle(src='/images/avatar3.png', alt='User Image')
+							.pull-left.info
+								p Hello,
+								p #{user.profile.name}
+					ul.sidebar-menu
+						li
+							a(href='/')
+								i.fa.fa-dashboard
+								span Dashboard
+						li.treeview
+							a(href='loyalty')
+								i.fa.fa-th
+								span Requests
+								i.fa.fa-angle-left.pull-right
+							ul.treeview-menu
+								li
+									a(href='/requests/recent')
+										i.fa.fa-angle-double-right
+										| New requests
+								li
+									a(href='/requests/approved')
+										i.fa.fa-angle-double-right
+										| Approved Requests
+								li
+									a(href='/requests/new')
+										i.fa.fa-angle-double-right
+										| Create New Request
+								li
+									a(href='/')
+										i.fa.fa-angle-double-right
+										| Notifications
+						li
+							a(href='/analytics')
+								i.fa.fa-download
+								span Analytics
+								small.badge.pull-right.bg-yellow 12
+			aside.right-side
+				section.content-header
+					h1 #{title}
+				section.content
+				block content

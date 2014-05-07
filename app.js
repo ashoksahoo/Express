@@ -55,8 +55,9 @@ app.use('/requests', requests);
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
+	res.status(404);
 //    next(err);
-	res.render("404");
+	res.render("404", {user: req.user});
 });
 
 /// error handlers

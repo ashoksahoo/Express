@@ -1,17 +1,14 @@
 //
 	Created by Ashok on 5/1/2014.
 
-head
-	title View Request
-	link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css')
-	link(rel='stylesheet', href='//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css')
-body
-	h1 Title
+extends ../layout
+block content
+	h2 Title
 	p #{request.title}
-	h2 Location
+	h3 Location
 	p #{request.location}
 	if(!request.approved)
-		h2 Responses
+		h3 Responses
 		- var counter = 0
 			ol
 				each response in request.response
@@ -22,7 +19,7 @@ body
 						a.btn.btn-success(href='/requests/#{request._id}/approve/#{counter}') Approve
 						- counter = counter +1
 	if(request.approved)
-		h2 Approved Response
+		h3 Approved Response
 		each response in request.response
 			if(response.approved)
 				p #{response.amount}

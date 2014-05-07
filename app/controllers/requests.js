@@ -11,9 +11,9 @@ exports.getRequestsNew = function(req,res){
 		{
 			res.send(err);
 		}
-		res.render('requests/list', { title: 'Recent Requests', requests:obj});
+		res.render('requests/list', { title: 'Recent Requests', requests:obj, user: req.user});
 	};
-	manager.findRequestsNew(callback);
+	manager.findRequestsNew(req.user, callback);
 };
 
 exports.getRequestsOld = function(req,res){
@@ -24,7 +24,7 @@ exports.getRequestsOld = function(req,res){
 			res.send(err);
 		}
 		console.warn(obj);
-		res.render('requests/list', { title: 'Approved Requests', requests:obj});
+		res.render('requests/list', { title: 'Approved Requests', requests:obj, user: req.user});
 	};
 	manager.findRequestsApproved(callback);
 };
@@ -38,7 +38,7 @@ exports.getRequestById = function(req,res){
 			res.render("404");
 		}
 		else
-		res.render('requests/view',{title:'Request Details',request:obj});
+		res.render('requests/view',{title:'Request Details',request:obj, user: req.user});
 	};
 	manager.findRequestById(id,req.user, callback);
 };
@@ -85,7 +85,7 @@ exports.editRequestPage = function(req,res){
 		if(err){
 			console.error(err)
 		}
-		res.render('requests/edit',{title:'Edit Request Details',request:obj});
+		res.render('requests/edit',{title:'Edit Request Details',request:obj, user: req.user});
 	};
 	manager.findRequestById(id,callback);
 };

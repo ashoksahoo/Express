@@ -4,8 +4,6 @@
  */
 mongoose = require("mongoose");
 Schema = mongoose.Schema;
-var ObjectId = require('mongoose').Types.ObjectId;
-
 
 var RequestSchema = new Schema({
 	created: {
@@ -76,10 +74,10 @@ exports.findRequestById = function(requestId, user,callback){
 			}
 		});
 	}
-	if(user.role == "admin"){
-	}
-	if(user.role == "business"){
-	}
+//	if(user.role == "admin"){
+//	}
+//	if(user.role == "business"){
+//	}
 	else{
 		Request.findOne({_id:requestId}).populate('response.created_by', 'profile.name').exec(function(err, obj){
 
@@ -107,20 +105,31 @@ exports.createRequest = function(record, callback){
 	})
 };
 
-exports.findRequestsNew = function(callback){
-	Request.find({ approved: false} ).populate('created_by','profile.name').exec((function(err, obj) {
-		if (err)
-		{
-			callback(err);
-		}
-		else
-		{
-			callback(null, obj);
-		}
-	}))
+exports.findRequestsNew = function(user, callback){
+	if(user.role == "business") {
+		Request.find({ approved: false}).populate('created_by', 'profile.name').exec(function (err, obj) {
+			if (err) {
+				callback(err);
+			}
+			else {
+				callback(null, obj);
+			}
+		})
+	}
+	else{
+
+		Request.find({ approved: false}).populate('created_by', 'profile.name').exec(function (err, obj) {
+			if (err) {
+				callback(err);
+			}
+			else {
+				callback(null, obj);
+			}
+		})
+	}
 };
 exports.findRequestsAll = function(callback){
-	Request.find().populate('created_by','profile.name').exec((function(err, obj) {
+	Request.find().populate('created_by','profile.name').exec(function(err, obj) {
 		if (err)
 		{
 			callback(err);
@@ -129,10 +138,10 @@ exports.findRequestsAll = function(callback){
 		{
 			callback(null, obj);
 		}
-	}))
+	})
 };
 exports.findRequestsApproved = function(callback){
-	Request.find({ approved: true}).populate('created_by response.created_by[]','profile.name profile.name').exec((function(err, obj) {
+	Request.find({ approved: true}).populate('created_by response.created_by[]','profile.name profile.name').exec(function(err, obj) {
 		if (err)
 		{
 			callback(err);
@@ -141,7 +150,7 @@ exports.findRequestsApproved = function(callback){
 		{
 			callback(null, obj);
 		}
-	}))
+	})
 };
 
 exports.updateRequest=function(requestId,request,callback){
