@@ -23,7 +23,6 @@ exports.getRequestsOld = function(req,res){
 		{
 			res.send(err);
 		}
-		console.warn(obj);
 		res.render('requests/list', { title: 'Approved Requests', requests:obj, user: req.user});
 	};
 	manager.findRequestsApproved(callback);

@@ -9,7 +9,7 @@ html
 		title App | #{title}
 	body.skin-blue
 		header.header
-			a.logo(href='/')  RTD
+			a.logo(href='/')  APP
 			nav.navbar.navbar-static-top(role='navigation')
 				a.navbar-btn.sidebar-toggle(href='#', data-toggle='offcanvas', role='button')
 					span.sr-only Toggle navigation
@@ -18,18 +18,11 @@ html
 					span.icon-bar
 				.navbar-right
 					ul.nav.navbar-nav
-						li.dropdown.messages-menu
-							a.dropdown-toggle(href='#', data-toggle='dropdown')
-								i.fa.fa-envelope
-								span.label.label-success 4
-						li.dropdown.notifications-menu
+						block notifications
+						//li.dropdown.notifications-menu
 							a.dropdown-toggle(href='#', data-toggle='dropdown')
 								i.fa.fa-warning
 								span.label.label-warning 10
-						li.dropdown.tasks-menu
-							a.dropdown-toggle(href='#', data-toggle='dropdown')
-								i.fa.fa-tasks
-								span.label.label-danger 9
 						li.dropdown.user.user-menu
 							a.dropdown-toggle(href='#', data-toggle='dropdown')
 								i.glyphicon.glyphicon-user
@@ -81,15 +74,10 @@ html
 									a(href='/requests/new')
 										i.fa.fa-angle-double-right
 										| Create New Request
-								li
-									a(href='/')
-										i.fa.fa-angle-double-right
-										| Notifications
 						li
-							a(href='/analytics')
+							a(href='/notifications')
 								i.fa.fa-download
-								span Analytics
-								small.badge.pull-right.bg-yellow 12
+								span Notifications
 			aside.right-side
 				section.content-header
 					h1 #{title}

@@ -33,27 +33,31 @@ passport.use(new LocalStrategy(
 ));
 exports.getUserProfilePage = function(req, res) {
 	res.render('user/profile', {
-		user : req.user
+		user : req.user,
+		title: "Profile"
 		 // get the user out of session and pass to template
 	});
 };
 exports.editUserProfilePage = function(req, res) {
 	if (req.user.role== "client"){
 	res.render('user/editprofile_c', {
-		user : req.user
+		user : req.user,
+		title: 'Edit Profile'
 		 // get the user out of session and pass to template
 	});
 	}
 	else if(req.user.role== "business"){
 	res.render('user/editprofile_b', {
-		user : req.user
+		user : req.user,
+		title: 'Edit Profile'
 		 // get the user out of session and pass to template
 	});
 	}
 	else if(req.user.role== "admin"){
 		console.warn(req.user);
 	res.render('user/editprofile_a', {
-		user : req.user
+		user : req.user,
+		title: 'Edit Profile'
 		 // get the user out of session and pass to template
 	});
 	}

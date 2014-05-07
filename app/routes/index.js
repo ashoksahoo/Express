@@ -19,13 +19,13 @@ var router = express.Router();
 	});
 
 	router.post('/login', passport.authenticate('local-login', {
-		successRedirect: '/profile',
+		successRedirect: '/',
 		failureRedirect: '/login',
 		failureFlash : true
 		}));
 
 	router.post('/register', passport.authenticate('local-register', {
-		successRedirect : '/profile',
+		successRedirect : '/profile/edit',
 		failureRedirect : '/register',
 		failureFlash : true
 	}));

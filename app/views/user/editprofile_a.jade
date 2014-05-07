@@ -3,17 +3,8 @@
 
 extends ../layout
 block content
-	.page-header.text-center
-		h2
-			span.fa.fa-anchor
-			| Admin Profile Page
-		a.btn.btn-default.btn-sm(href='/logout') Logout
-		a.btn.btn-default.btn-sm(href='/profile/edit') Edit Profile
 	.row
 		.col-sm-4
-			h3
-				span.fa.fa-user
-				| Local
 			form(method='post')
 				.form-group
 					label Email
