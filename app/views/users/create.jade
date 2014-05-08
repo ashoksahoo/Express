@@ -1,0 +1,20 @@
+//
+	Created by Ashok on 5/8/2014.
+extends ../layout
+block content
+	.container
+	.col-sm-6.col-sm-offset-3
+		form(action='/newuser', method='post')
+			.form-group
+				label Email
+				input.form-control(type='email', name='email')
+			.form-group
+				label Password
+				input.form-control(type='password', name='password')
+			.form-group
+				label Role
+				select.form-control(name = 'role')
+					option(value='admin') Admin
+					option(value='client') Client
+					option(value='business') Business
+			button.btn.btn-success.btn-lg(type='submit') Create New User

@@ -99,3 +99,4 @@ exports.getNotificationPage = function (req,res){
 	};
 	reqManager.createNotifications(req.user, callback)
 };
+

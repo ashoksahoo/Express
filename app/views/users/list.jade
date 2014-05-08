@@ -1,0 +1,10 @@
+//
+	Created by Ashok on 5/8/2014.
+extends ../layout
+block content
+	ol
+		each people in users
+			li
+				p Name : #{people.profile.name}
+				p EMail : #{people.local.email}
+				p Role : #{people.role}

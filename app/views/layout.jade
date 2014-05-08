@@ -57,7 +57,7 @@ html
 								i.fa.fa-dashboard
 								span Dashboard
 						li.treeview
-							a(href='loyalty')
+							a(href='/')
 								i.fa.fa-th
 								span Requests
 								i.fa.fa-angle-left.pull-right
@@ -70,19 +70,31 @@ html
 									a(href='/requests/approved')
 										i.fa.fa-angle-double-right
 										| Approved Requests
-								if locals.user == "business"
+								if(user.role == "business")
 									li
 										a(href='/requests/new')
 											i.fa.fa-angle-double-right
 											| Create New Request
 						li
 							a(href='/notifications')
-								i.fa.fa-download
+								i.fa.fa-plus-square-o
 								span Notifications
-						li
+						//if(locals.user.role == "admin")
+						li.treeview
 							a(href='/users')
-								i.fa.fa-download
+								i.fa.fa-user
 								span Users
+								i.fa.fa-angle-left.pull-right
+							ul.treeview-menu
+								li
+									a(href='/users')
+										i.fa.fa-angle-double-right
+										| All Users
+								li
+									a(href='/users/create')
+										i.fa.fa-angle-double-right
+										| Create a New user
+
 
 			aside.right-side
 				section.content-header

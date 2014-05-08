@@ -29,6 +29,11 @@ var router = express.Router();
 		failureRedirect : '/register',
 		failureFlash : true
 	}));
+	router.post('/newuser', passport.authenticate('local-register', {
+		successRedirect : '/users',
+		failureRedirect : '/users/create',
+		failureFlash : true
+	}));
 
 	router.get('/logout', controller.logoutUser);
 

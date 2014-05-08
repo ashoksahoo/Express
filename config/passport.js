@@ -75,6 +75,7 @@ module.exports = function(passport) {
 							if(req.user.role == "admin"){
 								return done(null,req.user)
 							}
+							delete newUser.local.password;
 							return done(null, newUser);
 						});
 					}
@@ -116,7 +117,8 @@ module.exports = function(passport) {
 					console.warn("Login fail");
 					return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
 				}
-				// all is well, return successful user
+				// all is well, return successful user after deleting password from object
+				delete user.local.password;
 				return done(null, user);
 			});
 
