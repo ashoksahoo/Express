@@ -70,14 +70,20 @@ html
 									a(href='/requests/approved')
 										i.fa.fa-angle-double-right
 										| Approved Requests
-								li
-									a(href='/requests/new')
-										i.fa.fa-angle-double-right
-										| Create New Request
+								if locals.user == "business"
+									li
+										a(href='/requests/new')
+											i.fa.fa-angle-double-right
+											| Create New Request
 						li
 							a(href='/notifications')
 								i.fa.fa-download
 								span Notifications
+						li
+							a(href='/users')
+								i.fa.fa-download
+								span Users
+
 			aside.right-side
 				section.content-header
 					h1 #{title}

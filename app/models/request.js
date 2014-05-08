@@ -144,7 +144,7 @@ exports.findRequestsAll = function(callback){
 exports.findRequestsApproved = function(user,callback){
 	if(user.role == "business") {
 		console.log(user._id);
-		Request.find({ approved: true,created_by:user._id}).populate('created_by response.created_by[]','profile.name profile.name').exec(function(err, obj) {
+		Request.find({ approved: true,created_by:user._id}).populate('created_by response.created_by','profile.name profile.name').exec(function(err, obj) {
 			if (err)
 			{
 				callback(err);
@@ -156,7 +156,7 @@ exports.findRequestsApproved = function(user,callback){
 		})
 	}
 	else {
-		Request.find({ approved: true}).populate('created_by response.created_by[]', 'profile.name profile.name').exec(function (err, obj) {
+		Request.find({ approved: true}).populate('created_by response.created_by', 'profile.name profile.name').exec(function (err, obj) {
 			if (err) {
 				callback(err);
 			}
@@ -228,12 +228,12 @@ Request.findById(request,function(err,obj){
 
 exports.createNotifications = function(user,callback){
 	if(user.role == "client"){
-		Request.find({approved:false}).populate('created_by','._id profile.name').exec(function(err,obj){
+		Request.find({approved:false},null,{sort:{created: 1}}).populate('created_by','._id profile.name').exec(function(err,obj){
 			callback(err,obj)
 		})
 	}
 	else if(user.role == "business"){
-		Request.find({approved:false,created_by:user._id }).populate('created_by','._id').exec(function(err,obj){
+		Request.find({approved:false,created_by:user._id },null,{sort:{created: 1}}).populate('created_by response.created_by','profile.name profile.name').exec(function(err,obj){
 			callback(err,obj)
 		})
 	}

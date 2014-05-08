@@ -10,12 +10,12 @@ var router = express.Router();
 	router.get('/login', function(req, res) {
 		if (req.isAuthenticated())
 			res.redirect('/profile');
-		res.render('login', { message: req.flash('loginMessage')} );
+		res.render('profile/login', { message: req.flash('loginMessage')} );
 	});
 	router.get('/register', function(req, res) {
 		if (req.isAuthenticated())
 			res.redirect('/profile');
-		res.render('register');
+		res.render('profile/register');
 	});
 
 	router.post('/login', passport.authenticate('local-login', {

@@ -72,6 +72,9 @@ module.exports = function(passport) {
 						newUser.save(function(err) {
 							if (err)
 								throw err;
+							if(req.user.role == "admin"){
+								return done(null,req.user)
+							}
 							return done(null, newUser);
 						});
 					}

@@ -1,7 +1,45 @@
 extends layout
 block content
+
 block notifications
-	li.dropdown.notifications-menu
-		a.dropdown-toggle(href='#', data-toggle='dropdown')
-			i.fa.fa-warning
-			span.label.label-warning 10
+	if(user.role =="client")
+		li.dropdown.notifications-menu
+			a.dropdown-toggle(href='#', data-toggle='dropdown')
+				i.fa.fa-warning
+				span.label.label-warning #{len}
+			ul.dropdown-menu
+				li.header You have #{len} notifications
+					ul.menu
+						each notif in notifications
+							li
+								a(href='/requests/#{notif._id}')
+									.pull-left
+									h4
+										| #{notif.title}
+									small.i
+										| #{notif.created}
+									p by #{notif.created_by.profile.name}
+				li.footer
+					a(href='/requests/recent') See All
+
+	if(user.role =="business")
+		li.dropdown.notifications-menu
+			a.dropdown-toggle(href='#', data-toggle='dropdown')
+				i.fa.fa-warning
+				span.label.label-warning #{len}
+			ul.dropdown-menu
+				li.header You have #{len} notifications
+					ul.menu
+						each notif in notifications
+							each response in notif.response
+								li
+									a(href='/requests/#{notif._id}')
+										.pull-left
+										h4
+											| #{response.amount} in
+											b #{notif.title}
+										small.i
+											| #{response.created}
+										p by #{response.created_by.profile.name}
+				li.footer
+					a(href='/requests/recent') See All

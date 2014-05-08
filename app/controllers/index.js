@@ -1,7 +1,8 @@
 var User = require('./../models/user');
 var reqManager = require('./../models/request');
 var passport = require('passport'),
-	LocalStrategy = require('passport-local').Strategy;
+	LocalStrategy = require('passport-local').Strategy,
+	_ = require('underscore');
 
 exports.getAngularTemplate = function(req,res){
 	var module, templateFolder, templateName;
@@ -33,39 +34,18 @@ passport.use(new LocalStrategy(
 	}
 ));
 exports.getUserProfilePage = function(req, res) {
-	res.render('user/profile', {
+	res.render('profile/profile', {
 		user : req.user,
 		title: "Profile"
 		 // get the user out of session and pass to template
 	});
 };
 exports.editUserProfilePage = function(req, res) {
-	if (req.user.role== "client"){
-	res.render('user/editprofile_c', {
+	res.render('profile/editprofile', {
 		user : req.user,
 		title: 'Edit Profile'
 		 // get the user out of session and pass to template
 	});
-	}
-	else if(req.user.role== "business"){
-	res.render('user/editprofile_b', {
-		user : req.user,
-		title: 'Edit Profile'
-		 // get the user out of session and pass to template
-	});
-	}
-	else if(req.user.role== "admin"){
-		console.warn(req.user);
-	res.render('user/editprofile_a', {
-		user : req.user,
-		title: 'Edit Profile'
-		 // get the user out of session and pass to template
-	});
-	}
-	else{
-		res.status(403);
-		res.send("You are not an authenticated User")
-	}
 };
 exports.editUserProfile = function(req, res) {
 	var id=req.user._id;
@@ -101,9 +81,21 @@ exports.logoutUser = function(req, res) {
 };
 
 exports.getNotificationPage = function (req,res){
-	var callback = function(err,obj){
-	res.send(obj);
-//	res.render('notification', {title: "Notification", user:req.user, notifications:obj })
+	var callback = function(err,obj) {
+		if (req.user.role == "client") {
+			res.render('notification', {title: "Notification", user: req.user, notifications: obj,len:obj.length })
+		}
+		else if (req.user.role == "business") {
+			var notifications = [];
+			_.map(obj, function (request) {
+				notifications.push(request.response)
+			});
+			notifications = _.flatten(notifications);
+//			res.send(obj);
+			res.render('notification', {title: "Notification", user: req.user, notifications: obj,len:notifications.length })
+		}else{
+
+		}
 	};
 	reqManager.createNotifications(req.user, callback)
 };

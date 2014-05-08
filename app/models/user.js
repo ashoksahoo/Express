@@ -8,6 +8,10 @@ var userSchema = mongoose.Schema({
 		email        : String,
 		password     : String
 	},
+	active: {
+		type: Boolean,
+		default: true
+	},
 	profile 		: {
 		name 		: {
 			type: String,
